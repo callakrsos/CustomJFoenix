@@ -6,18 +6,18 @@
  *******************************/
 package com.jfoenix.skins;
 
-import com.jfoenix.controls.DateTimeCell;
-import com.jfoenix.controls.behavior.DateTimeCellBehavior;
+import com.jfoenix.controls.JFXDateTimeCell;
+import com.jfoenix.controls.behavior.JFXDateTimeCellBehavior;
 import com.sun.javafx.scene.control.skin.CellSkinBase;
 
 import javafx.scene.text.Text;
 
-public class DateTimeCellSkin extends CellSkinBase<DateTimeCell, DateTimeCellBehavior> {
+public class DateTimeCellSkin extends CellSkinBase<JFXDateTimeCell, JFXDateTimeCellBehavior> {
 
 	static final double DEFAULT_CELL_SIZE = 24.0;
 
-	public DateTimeCellSkin(DateTimeCell control) {
-		super(control, new DateTimeCellBehavior(control));
+	public DateTimeCellSkin(JFXDateTimeCell control) {
+		super(control, new JFXDateTimeCellBehavior(control));
 
 		control.setMaxWidth(Double.MAX_VALUE); // make the cell grow to fill a GridPane's cell
 	}

@@ -39,8 +39,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import com.jfoenix.controls.DateTimeCell;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDateTimeCell;
 import com.jfoenix.controls.JFXDateTimePicker;
 import com.jfoenix.controls.JFXListCell;
 import com.jfoenix.controls.JFXListView;
@@ -61,7 +61,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.control.DateCell;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -115,11 +114,11 @@ public class JFXDateTimePickerContent extends VBox {
 	private ParallelTransition tempImageTransition;
 
 	private int daysPerWeek = 7;
-	private List<DateTimeCell> weekDaysCells = new ArrayList<>();
-	private List<DateTimeCell> weekNumberCells = new ArrayList<>();
-	protected List<DateTimeCell> dayCells = new ArrayList<>();
+	private List<JFXDateTimeCell> weekDaysCells = new ArrayList<>();
+	private List<JFXDateTimeCell> weekNumberCells = new ArrayList<>();
+	protected List<JFXDateTimeCell> dayCells = new ArrayList<>();
 	private LocalDateTime[] dayCellDates;
-	private DateTimeCell currentFocusedDayCell = null;
+	private JFXDateTimeCell currentFocusedDayCell = null;
 
 	private ListView<String> yearsListView = new JFXListView<String>() {
 		{
@@ -333,8 +332,8 @@ public class JFXDateTimePickerContent extends VBox {
 
 		addEventHandler(KeyEvent.ANY, event -> {
 			Node node = getScene().getFocusOwner();
-			if (node instanceof DateTimeCell)
-				currentFocusedDayCell = (DateTimeCell) node;
+			if (node instanceof JFXDateTimeCell)
+				currentFocusedDayCell = (JFXDateTimeCell) node;
 
 			switch (event.getCode()) {
 			case HOME:
@@ -419,7 +418,7 @@ public class JFXDateTimePickerContent extends VBox {
 	private void createWeekDaysCells() {
 		// create week days names
 		for (int i = 0; i < daysPerWeek; i++) {
-			DateTimeCell cell = new DateTimeCell();
+			JFXDateTimeCell cell = new JFXDateTimeCell();
 			cell.getStyleClass().add("day-name-cell");
 			cell.setTextFill(Color.valueOf("#9C9C9C"));
 			cell.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -429,7 +428,7 @@ public class JFXDateTimePickerContent extends VBox {
 		}
 		// create week days numbers
 		for (int i = 0; i < 6; i++) {
-			DateTimeCell cell = new DateTimeCell();
+			JFXDateTimeCell cell = new JFXDateTimeCell();
 			cell.getStyleClass().add("week-number-cell");
 			cell.setTextFill(Color.valueOf("#9C9C9C"));
 			cell.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -758,7 +757,7 @@ public class JFXDateTimePickerContent extends VBox {
 		int daysInCurMonth = -1;
 
 		for (int i = 0; i < 6 * daysPerWeek; i++) {
-			DateTimeCell dayCell = dayCells.get(i);
+			JFXDateTimeCell dayCell = dayCells.get(i);
 			dayCell.getStyleClass().setAll("cell", "date-cell", "day-cell");
 			dayCell.setPrefSize(40, 42);
 			dayCell.setDisable(false);
@@ -867,7 +866,7 @@ public class JFXDateTimePickerContent extends VBox {
 		}
 	}
 
-	protected LocalDateTime dayCellDate(DateTimeCell dateCell) {
+	protected LocalDateTime dayCellDate(JFXDateTimeCell dateCell) {
 		assert (dayCellDates != null);
 		LocalDateTime localDate = dayCellDates[dayCells.indexOf(dateCell)];
 		return localDate;
@@ -899,7 +898,7 @@ public class JFXDateTimePickerContent extends VBox {
 			}
 		}
 		YearMonth yearMonth = selectedYearMonth.get();
-		DateTimeCell dateCell = currentFocusedDayCell;
+		JFXDateTimeCell dateCell = currentFocusedDayCell;
 		if (dateCell == null || !dayCellDate(dateCell).getMonth().equals(yearMonth.getMonth())) {
 			//기존코드 주석
 			//			LocalDate atDay = yearMonth.atDay(1);
@@ -911,7 +910,7 @@ public class JFXDateTimePickerContent extends VBox {
 		goToDayCell(dateCell, offset, unit, focusDayCell);
 	}
 
-	public void goToDayCell(DateTimeCell dateCell, int offset, ChronoUnit unit, boolean focusDayCell) {
+	public void goToDayCell(JFXDateTimeCell dateCell, int offset, ChronoUnit unit, boolean focusDayCell) {
 		goToDate(dayCellDate(dateCell).plus(offset, unit), focusDayCell);
 	}
 
@@ -923,12 +922,12 @@ public class JFXDateTimePickerContent extends VBox {
 		}
 	}
 
-	public void selectDayCell(DateTimeCell dateCell) {
+	public void selectDayCell(JFXDateTimeCell dateCell) {
 		datePicker.setValue(dayCellDate(dateCell));
 		datePicker.hide();
 	}
 
-	public DateTimeCell findDayCellOfDate(LocalDateTime date) {
+	public JFXDateTimeCell findDayCellOfDate(LocalDateTime date) {
 		for (int i = 0; i < dayCellDates.length; i++)
 			if (date.equals(dayCellDates[i]))
 				return dayCells.get(i);
@@ -954,12 +953,12 @@ public class JFXDateTimePickerContent extends VBox {
 	protected void createDayCells() {
 		for (int row = 0; row < 6; row++) {
 			for (int col = 0; col < daysPerWeek; col++) {
-				DateTimeCell dayCell = createDayCell();
+				JFXDateTimeCell dayCell = createDayCell();
 				dayCell.addEventHandler(MouseEvent.MOUSE_CLICKED, click -> {
 					// allow date selection on mouse primary button click
 					if (click.getButton() != MouseButton.PRIMARY)
 						return;
-					DateTimeCell selectedDayCell = (DateTimeCell) click.getSource();
+					JFXDateTimeCell selectedDayCell = (JFXDateTimeCell) click.getSource();
 					selectDayCell(selectedDayCell);
 					currentFocusedDayCell = selectedDayCell;
 				});
@@ -985,14 +984,14 @@ public class JFXDateTimePickerContent extends VBox {
 		updateContentGrid();
 	}
 
-	private DateTimeCell createDayCell() {
-		DateTimeCell dayCell = null;
+	private JFXDateTimeCell createDayCell() {
+		JFXDateTimeCell dayCell = null;
 		// call cell factory if set by the user
 		if (datePicker.getDayCellFactory() != null)
 			dayCell = datePicker.getDayCellFactory().call(datePicker);
 		// else create the defaul day cell
 		if (dayCell == null)
-			dayCell = new DateTimeCell();
+			dayCell = new JFXDateTimeCell();
 		return dayCell;
 	}
 

@@ -19,17 +19,13 @@ import static javafx.scene.input.KeyEvent.KEY_RELEASED;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jfoenix.controls.DateTimeCell;
+import com.jfoenix.controls.JFXDateTimeCell;
 import com.jfoenix.skins.JFXDateTimePickerContent;
 import com.sun.javafx.scene.control.behavior.BehaviorBase;
 import com.sun.javafx.scene.control.behavior.KeyBinding;
-import com.sun.javafx.scene.control.skin.DatePickerContent;
 import com.sun.javafx.scene.traversal.Direction;
-
-/**
- * @author KYJ
- *
- */
+import javafx.geometry.NodeOrientation;
+import javafx.scene.Node;
 /*
  * Copyright (c) 2013, 2014, Oracle and/or its affiliates. All rights reserved.
  * ORACLE PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
@@ -55,19 +51,14 @@ import com.sun.javafx.scene.traversal.Direction;
  *
  */
 
-import javafx.geometry.NodeOrientation;
-import javafx.scene.Node;
-import javafx.scene.control.DateCell;
-
 /**
- * Behaviors for LocalDate based cells types. Simply defines methods
- * that subclasses implement so that CellSkinBase has API to call.
+ * @author KYJ
  *
  */
-public class DateTimeCellBehavior extends BehaviorBase<DateTimeCell> {
+public class JFXDateTimeCellBehavior extends BehaviorBase<JFXDateTimeCell> {
 
 	/**************************************************************************
-	 *                          Setup KeyBindings                             *
+	 * Setup KeyBindings *
 	 *************************************************************************/
 	protected static final List<KeyBinding> DATE_CELL_BINDINGS = new ArrayList<KeyBinding>();
 
@@ -80,13 +71,13 @@ public class DateTimeCellBehavior extends BehaviorBase<DateTimeCell> {
 		DATE_CELL_BINDINGS.add(new KeyBinding(SPACE, KEY_RELEASED, "SelectDate"));
 	}
 
-	public DateTimeCellBehavior(DateTimeCell dateCell) {
+	public JFXDateTimeCellBehavior(JFXDateTimeCell dateCell) {
 		super(dateCell, DATE_CELL_BINDINGS);
 	}
 
 	@Override
 	public void callAction(String name) {
-		DateTimeCell cell = getControl();
+		JFXDateTimeCell cell = getControl();
 		JFXDateTimePickerContent dpc = findDatePickerContent(cell);
 
 		if (dpc != null) {
@@ -111,10 +102,10 @@ public class DateTimeCellBehavior extends BehaviorBase<DateTimeCell> {
 		case DOWN:
 		case LEFT:
 		case RIGHT:
-			if (node instanceof DateTimeCell) {
+			if (node instanceof JFXDateTimeCell) {
 				JFXDateTimePickerContent dpc = findDatePickerContent(node);
 				if (dpc != null) {
-					DateTimeCell cell = (DateTimeCell) node;
+					JFXDateTimeCell cell = (JFXDateTimeCell) node;
 					switch (dir) {
 					case UP:
 						dpc.goToDayCell(cell, -1, WEEKS, true);

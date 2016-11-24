@@ -56,8 +56,8 @@ import javafx.scene.control.Skin;
  * @author KYJ
  *
  */
-public class DateTimeCell extends Cell<LocalDateTime> {
-	public DateTimeCell() {
+public class JFXDateTimeCell extends Cell<LocalDateTime> {
+	public JFXDateTimeCell() {
 		getStyleClass().add(DEFAULT_STYLE_CLASS);
 	}
 

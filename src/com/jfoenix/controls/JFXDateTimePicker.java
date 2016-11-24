@@ -396,19 +396,19 @@ public class JFXDateTimePicker extends ComboBoxBase<LocalDateTime> {
 	 *
 	 * @defaultValue null
 	 */
-	private ObjectProperty<Callback<JFXDateTimePicker, DateTimeCell>> dayCellFactory;
+	private ObjectProperty<Callback<JFXDateTimePicker, JFXDateTimeCell>> dayCellFactory;
 
-	public final void setDayCellFactory(Callback<JFXDateTimePicker, DateTimeCell> value) {
+	public final void setDayCellFactory(Callback<JFXDateTimePicker, JFXDateTimeCell> value) {
 		dayCellFactoryProperty().set(value);
 	}
 
-	public final Callback<JFXDateTimePicker, DateTimeCell> getDayCellFactory() {
+	public final Callback<JFXDateTimePicker, JFXDateTimeCell> getDayCellFactory() {
 		return (dayCellFactory != null) ? dayCellFactory.get() : null;
 	}
 
-	public final ObjectProperty<Callback<JFXDateTimePicker, DateTimeCell>> dayCellFactoryProperty() {
+	public final ObjectProperty<Callback<JFXDateTimePicker, JFXDateTimeCell>> dayCellFactoryProperty() {
 		if (dayCellFactory == null) {
-			dayCellFactory = new SimpleObjectProperty<Callback<JFXDateTimePicker, DateTimeCell>>(this, "dayCellFactory");
+			dayCellFactory = new SimpleObjectProperty<Callback<JFXDateTimePicker, JFXDateTimeCell>>(this, "dayCellFactory");
 		}
 		return dayCellFactory;
 	}
