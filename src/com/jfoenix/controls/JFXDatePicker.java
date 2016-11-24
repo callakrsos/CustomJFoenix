@@ -49,22 +49,22 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 /**
- * JFXDatePicker is the material design implementation of a date picker. 
- * 
+ * JFXDatePicker is the material design implementation of a date picker.
+ *
  * @author  Shadi Shaheen
  * @version 1.0
  * @since   2016-03-09
  */
 public class JFXDatePicker extends DatePicker {
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	public JFXDatePicker() {
-		super();		
+		super();
 		initialize();
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -72,12 +72,13 @@ public class JFXDatePicker extends DatePicker {
        super(localDate);
        initialize();
     }
-	
+
+
 	private void initialize() {
 		this.getStyleClass().add(DEFAULT_STYLE_CLASS);
 		setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
 	}
-    
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -110,7 +111,7 @@ public class JFXDatePicker extends DatePicker {
 	 * property that holds the time value if showing the time picker
 	 */
     private ObjectProperty<LocalTime> lastValidTime = new SimpleObjectProperty<>();
-    
+
 	public final ObjectProperty<LocalTime> timeProperty() {
 		return this.lastValidTime;
 	}
@@ -122,13 +123,13 @@ public class JFXDatePicker extends DatePicker {
 	}
 
 	private boolean showTime = false;
-    
+
 	public boolean isShowTime() {
 		return showTime;
 	}
 
 	/**
-	 * indicates whether to pick time or date 
+	 * indicates whether to pick time or date
 	 */
 	public void setShowTime(boolean showTime) {
 		this.showTime = showTime;
@@ -139,7 +140,7 @@ public class JFXDatePicker extends DatePicker {
 	 * Stylesheet Handling                                                     *
 	 *                                                                         *
 	 **************************************************************************/
-	
+
 	/**
      * Initialize the style class to 'jfx-date-picker'.
      *
@@ -147,14 +148,14 @@ public class JFXDatePicker extends DatePicker {
      * this control.
      */
 	private static final String DEFAULT_STYLE_CLASS = "jfx-date-picker";
-    
+
 	/**
 	 * show the popup as an overlay using JFXDialog
 	 * NOTE: to show it properly the scene root must be StackPane, or the user must set
 	 * the dialog parent manually using the property {{@link #dialogParentProperty()}
 	 */
 	private StyleableBooleanProperty overLay = new SimpleStyleableBooleanProperty(StyleableProperties.OVERLAY, JFXDatePicker.this, "overLay", false);
-	
+
 	public final StyleableBooleanProperty overLayProperty() {
 		return this.overLay;
 	}
@@ -164,7 +165,7 @@ public class JFXDatePicker extends DatePicker {
 	public final void setOverLay(final boolean overLay) {
 		this.overLayProperty().set(overLay);
 	}
-	
+
 	/**
 	 * the default color used in the data picker content
 	 */
@@ -173,13 +174,13 @@ public class JFXDatePicker extends DatePicker {
 	public Paint getDefaultColor(){
 		return defaultColor == null ? Color.valueOf("#009688") : defaultColor.get();
 	}
-	public StyleableObjectProperty<Paint> defaultColorProperty(){		
+	public StyleableObjectProperty<Paint> defaultColorProperty(){
 		return this.defaultColor;
 	}
 	public void setDefaultColor(Paint color){
 		this.defaultColor.set(color);
 	}
-    
+
 	private static class StyleableProperties {
 		private static final CssMetaData< JFXDatePicker, Paint> DEFAULT_COLOR =
 				new CssMetaData< JFXDatePicker, Paint>("-fx-default-color",
@@ -206,7 +207,7 @@ public class JFXDatePicker extends DatePicker {
 				return control.overLayProperty();
 			}
 		};
-		
+
 		private static final List<CssMetaData<? extends Styleable, ?>> CHILD_STYLEABLES;
 		static {
 			final List<CssMetaData<? extends Styleable, ?>> styleables =

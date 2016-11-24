@@ -16,24 +16,25 @@
  * specific language governing permissions and limitations
  * under the License.
  */
- 
+
+/* 2016-11-24 by kyj. Font-Error Fix  */
 @font-face {
   font-family: Roboto;
   src: url("../font/roboto/Roboto-Regular.ttf");
 }
 
 @font-face {
-  font-family: "Roboto Medium";
+  font-family: Roboto-Medium;
   src: url("../font/roboto/Roboto-Medium.ttf");
 }
 
 @font-face {
-  font-family: "Roboto Light";
+  font-family: Roboto-Light;
   src: url("../font/roboto/Roboto-Light.ttf");
 }
 
 @font-face {
-  font-family: "Roboto Bold";
+  font-family: Roboto-Bold;
   src: url("../font/roboto/Roboto-Bold.ttf");
 }
 

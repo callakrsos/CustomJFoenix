@@ -18,23 +18,22 @@
  */
 package com.jfoenix.skins;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 
-import com.jfoenix.controls.JFXDatePicker;
+import com.jfoenix.controls.JFXDateTimePicker;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialog.DialogTransition;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.controls.behavior.JFXDatePickerBehavior;
+import com.jfoenix.controls.behavior.JFXDateTimePickerBehavior;
 import com.jfoenix.svg.SVGGlyph;
 import com.sun.javafx.scene.control.skin.ComboBoxPopupControl;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -45,49 +44,41 @@ import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
 
 /**
- * <h1>Material Design Date Picker Skin</h1>
  *
- * @author  Shadi Shaheen
- * @version 1.0
- * @since   2016-03-09
+ * @author KYJ
  */
-public class JFXDatePickerSkin extends ComboBoxPopupControl<LocalDate> {
+public class JFXDateTimePickerSkin extends ComboBoxPopupControl<LocalDateTime> {
 
 	/**
 	 * TODO:
 	 * 1. Handle different Chronology
 	 */
-	private JFXDatePicker jfxDatePicker;
+	private JFXDateTimePicker JFXDateTimePicker;
 	private JFXTextField editorNode;
 
 	// displayNode is the same as editorNode
 	private TextField displayNode;
-	private JFXDatePickerContent jfxDatePickerContent;
-	private JFXTimePickerContent timeContent;
+	private JFXDateTimePickerContent JFXDateTimePickerContent;
 
 	private JFXDialog dialog;
 
-	public JFXDatePickerSkin(final JFXDatePicker datePicker) {
-		super(datePicker, new JFXDatePickerBehavior(datePicker));
-		this.jfxDatePicker = datePicker;
+	public JFXDateTimePickerSkin(final JFXDateTimePicker datePicker) {
+		super(datePicker, new JFXDateTimePickerBehavior(datePicker));
+		this.JFXDateTimePicker = datePicker;
 		editorNode = new JFXTextField();
 		editorNode.focusColorProperty().bind(datePicker.defaultColorProperty());
-		editorNode.focusedProperty().addListener((obj, oldVal, newVal) -> {
-			if (!newVal)
-				setTextFromTextFieldIntoComboBoxValue();
-		});
 
 		// create calender or clock button
-		if (!((JFXDatePicker) getSkinnable()).isShowTime())
-			arrow = new SVGGlyph(0, "calendar",
-					"M320 384h128v128h-128zM512 384h128v128h-128zM704 384h128v128h-128zM128 768h128v128h-128zM320 768h128v128h-128zM512 768h128v128h-128zM320 576h128v128h-128zM512 576h128v128h-128zM704 576h128v128h-128zM128 576h128v128h-128zM832 0v64h-128v-64h-448v64h-128v-64h-128v1024h960v-1024h-128zM896 960h-832v-704h832v704z",
-					Color.BLACK);
-		else
-			arrow = new SVGGlyph(0, "clock",
-					"M512 310.857v256q0 8-5.143 13.143t-13.143 5.143h-182.857q-8 0-13.143-5.143t-5.143-13.143v-36.571q0-8 5.143-13.143t13.143-5.143h128v-201.143q0-8 5.143-13.143t13.143-5.143h36.571q8 0 13.143 5.143t5.143 13.143zM749.714 512q0-84.571-41.714-156t-113.143-113.143-156-41.714-156 41.714-113.143 113.143-41.714 156 41.714 156 113.143 113.143 156 41.714 156-41.714 113.143-113.143 41.714-156zM877.714 512q0 119.429-58.857 220.286t-159.714 159.714-220.286 58.857-220.286-58.857-159.714-159.714-58.857-220.286 58.857-220.286 159.714-159.714 220.286-58.857 220.286 58.857 159.714 159.714 58.857 220.286z",
-					Color.BLACK);
+		//		if (!((JFXDateTimePicker) getSkinnable()).isShowTime())
+		arrow = new SVGGlyph(0, "calendar",
+				"M320 384h128v128h-128zM512 384h128v128h-128zM704 384h128v128h-128zM128 768h128v128h-128zM320 768h128v128h-128zM512 768h128v128h-128zM320 576h128v128h-128zM512 576h128v128h-128zM704 576h128v128h-128zM128 576h128v128h-128zM832 0v64h-128v-64h-448v64h-128v-64h-128v1024h960v-1024h-128zM896 960h-832v-704h832v704z",
+				Color.BLACK);
+		//		else
+		//			arrow = new SVGGlyph(0, "clock",
+		//					"M512 310.857v256q0 8-5.143 13.143t-13.143 5.143h-182.857q-8 0-13.143-5.143t-5.143-13.143v-36.571q0-8 5.143-13.143t13.143-5.143h128v-201.143q0-8 5.143-13.143t13.143-5.143h36.571q8 0 13.143 5.143t5.143 13.143zM749.714 512q0-84.571-41.714-156t-113.143-113.143-156-41.714-156 41.714-113.143 113.143-41.714 156 41.714 156 113.143 113.143 156 41.714 156-41.714 113.143-113.143 41.714-156zM877.714 512q0 119.429-58.857 220.286t-159.714 159.714-220.286 58.857-220.286-58.857-159.714-159.714-58.857-220.286 58.857-220.286 159.714-159.714 220.286-58.857 220.286 58.857 159.714 159.714 58.857 220.286z",
+		//					Color.BLACK);
 
-		((SVGGlyph) arrow).fillProperty().bind(jfxDatePicker.defaultColorProperty());
+		((SVGGlyph) arrow).fillProperty().bind(JFXDateTimePicker.defaultColorProperty());
 		((SVGGlyph) arrow).setSize(20, 20);
 		arrowButton.getChildren().setAll(arrow);
 		arrowButton.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -104,38 +95,33 @@ public class JFXDatePickerSkin extends ComboBoxPopupControl<LocalDate> {
 
 	@Override
 	public Node getPopupContent() {
-		if (jfxDatePicker.isShowTime()) {
-			if (timeContent == null) {
-				timeContent = new JFXTimePickerContent(jfxDatePicker);
-			}
-			return timeContent;
-		} else {
-			if (jfxDatePickerContent == null) {
-				// different chronologies are not supported yet
-				jfxDatePickerContent = new JFXDatePickerContent(jfxDatePicker);
-			}
-			return jfxDatePickerContent;
+
+		if (JFXDateTimePickerContent == null) {
+			// different chronologies are not supported yet
+			JFXDateTimePickerContent = new JFXDateTimePickerContent(JFXDateTimePicker);
 		}
+		return JFXDateTimePickerContent;
+
 	}
 
 	@Override
 	public void show() {
-		if (!((JFXDatePicker) getSkinnable()).isOverLay())
+		if (!((JFXDateTimePicker) getSkinnable()).isOverLay())
 			super.show();
-		if (jfxDatePickerContent != null) {
-			jfxDatePickerContent.init();
-			jfxDatePickerContent.clearFocus();
+		if (JFXDateTimePickerContent != null) {
+			JFXDateTimePickerContent.init();
+			JFXDateTimePickerContent.clearFocus();
 		}
 
-		if (((JFXDatePicker) getSkinnable()).isOverLay()) {
+		if (((JFXDateTimePicker) getSkinnable()).isOverLay()) {
 			if (dialog == null) {
-				StackPane dialogParent = jfxDatePicker.getDialogParent();
+				StackPane dialogParent = JFXDateTimePicker.getDialogParent();
 				if (dialogParent == null)
 					dialogParent = (StackPane) getSkinnable().getScene().getRoot();
 				dialog = new JFXDialog(dialogParent, (Region) getPopupContent(), DialogTransition.CENTER, true);
 				arrowButton.setOnMouseClicked((click) -> {
-					if (((JFXDatePicker) getSkinnable()).isOverLay()) {
-						StackPane parent = jfxDatePicker.getDialogParent();
+					if (((JFXDateTimePicker) getSkinnable()).isOverLay()) {
+						StackPane parent = JFXDateTimePicker.getDialogParent();
 						if (parent == null)
 							parent = (StackPane) getSkinnable().getScene().getRoot();
 						dialog.show(parent);
@@ -149,38 +135,38 @@ public class JFXDatePickerSkin extends ComboBoxPopupControl<LocalDate> {
 	protected void handleControlPropertyChanged(String p) {
 		if ("DAY_CELL_FACTORY".equals(p)) {
 			updateDisplayNode();
-			jfxDatePickerContent = null;
+			JFXDateTimePickerContent = null;
 			popup = null;
 		} else if ("CONVERTER".equals(p)) {
 			updateDisplayNode();
 		} else if ("EDITOR".equals(p)) {
 			getEditableInputNode();
 		} else if ("SHOWING".equals(p)) {
-			if (jfxDatePicker.isShowing()) {
-				if (jfxDatePickerContent != null) {
-					LocalDate date = jfxDatePicker.getValue();
+			if (JFXDateTimePicker.isShowing()) {
+				if (JFXDateTimePickerContent != null) {
+					LocalDateTime date = JFXDateTimePicker.getValue();
 					// set the current date / now when showing the date picker content
-					jfxDatePickerContent.displayedYearMonthProperty().set((date != null) ? YearMonth.from(date) : YearMonth.now());
-					jfxDatePickerContent.updateValues();
+					JFXDateTimePickerContent.displayedYearMonthProperty().set((date != null) ? YearMonth.from(date) : YearMonth.now());
+					JFXDateTimePickerContent.updateValues();
 				}
 				show();
 			} else {
 				hide();
 			}
 		} else if ("SHOW_WEEK_NUMBERS".equals(p)) {
-			if (jfxDatePickerContent != null) {
+			if (JFXDateTimePickerContent != null) {
 				// update the content grid to show week numbers
-				jfxDatePickerContent.updateContentGrid();
-				jfxDatePickerContent.updateWeekNumberDateCells();
+				JFXDateTimePickerContent.updateContentGrid();
+				JFXDateTimePickerContent.updateWeekNumberDateCells();
 			}
 		} else if ("VALUE".equals(p)) {
 			updateDisplayNode();
-			if (jfxDatePickerContent != null) {
-				LocalDate date = jfxDatePicker.getValue();
-				jfxDatePickerContent.displayedYearMonthProperty().set((date != null) ? YearMonth.from(date) : YearMonth.now());
-				jfxDatePickerContent.updateValues();
+			if (JFXDateTimePickerContent != null) {
+				LocalDateTime date = JFXDateTimePicker.getValue();
+				JFXDateTimePickerContent.displayedYearMonthProperty().set((date != null) ? YearMonth.from(date) : YearMonth.now());
+				JFXDateTimePickerContent.updateValues();
 			}
-			jfxDatePicker.fireEvent(new ActionEvent());
+			JFXDateTimePicker.fireEvent(new ActionEvent());
 		} else if ("TIME".equals(p)) {
 			updateTimeDisplayNode();
 		} else {
@@ -189,9 +175,10 @@ public class JFXDatePickerSkin extends ComboBoxPopupControl<LocalDate> {
 	}
 
 	private void updateTimeDisplayNode() {
-		if (jfxDatePicker.isShowTime() && jfxDatePicker.getTime() != null) {
-			DateTimeFormatter fmt = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT);
-			displayNode.setText(fmt.format(jfxDatePicker.getTime()));
+		if (JFXDateTimePicker.getTime() != null) {
+			DateTimeFormatter fmt = DateTimeFormatter.ofLocalizedTime(FormatStyle.FULL);
+			String format = fmt.format(JFXDateTimePicker.getTime());
+			displayNode.setText(format);
 		}
 	}
 
@@ -213,9 +200,8 @@ public class JFXDatePickerSkin extends ComboBoxPopupControl<LocalDate> {
 	}
 
 	@Override
-	protected StringConverter<LocalDate> getConverter() {
-		//		return new LocalDateStringConverter(DateTimeFormatter.ofPattern("HH:mm:ss") , DateTimeFormatter.ofPattern("HH:mm:ss") );
-		return ((DatePicker) getSkinnable()).getConverter();
+	protected StringConverter<LocalDateTime> getConverter() {
+		return ((JFXDateTimePicker) getSkinnable()).getConverter();
 	}
 
 	@Override
@@ -226,7 +212,7 @@ public class JFXDatePickerSkin extends ComboBoxPopupControl<LocalDate> {
 			updateDisplayNode();
 			updateTimeDisplayNode();
 		}
-		displayNode.setEditable(jfxDatePicker.isEditable());
+		displayNode.setEditable(JFXDateTimePicker.isEditable());
 		return displayNode;
 	}
 
@@ -235,7 +221,7 @@ public class JFXDatePickerSkin extends ComboBoxPopupControl<LocalDate> {
 	 * DatePicker button is in sync after the popup is being dismissed
 	 */
 	public void syncWithAutoUpdate() {
-		if (!getPopup().isShowing() && jfxDatePicker.isShowing())
-			jfxDatePicker.hide();
+		if (!getPopup().isShowing() && JFXDateTimePicker.isShowing())
+			JFXDateTimePicker.hide();
 	}
 }
