@@ -9,6 +9,7 @@ import io.datafx.controller.FXMLController;
 import io.datafx.controller.flow.FlowException;
 import io.datafx.controller.util.VetoException;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
@@ -27,6 +28,8 @@ public class PickersController {
 		
 		
 		//2016-11-24 Add by kyj. 
-		hboxRuntime.getChildren().add(new JFXDateTimePicker());
+		JFXDateTimePicker e = new JFXDateTimePicker();
+		e.setTextAlignment(Pos.CENTER);
+		hboxRuntime.getChildren().add(e);
 	}
 }

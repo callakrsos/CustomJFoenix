@@ -47,6 +47,7 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXSlider;
 import com.jfoenix.svg.SVGGlyph;
 import com.jfoenix.transitions.CachedTransition;
+import com.jfoenix.util.FxUtil;
 
 import javafx.animation.Animation.Status;
 import javafx.animation.Interpolator;
@@ -103,7 +104,9 @@ public class JFXDateTimePickerContent extends VBox {
 	private JFXButton forwardMonthButton;
 	private ObjectProperty<Label> selectedYearCell = new SimpleObjectProperty<>(null);
 	private Label selectedDateLabel;
+	private Label selectedTimeLabel;
 	private Label selectedYearLabel;
+
 	private Label monthYearLabel;
 	protected GridPane contentGrid;
 	private StackPane calendarPlaceHolder = new StackPane();
@@ -122,7 +125,7 @@ public class JFXDateTimePickerContent extends VBox {
 
 	private ListView<String> yearsListView = new JFXListView<String>() {
 		{
-			this.getStyleClass().setAll("date-time-picker-list-view");
+			this.getStyleClass().setAll("date-picker-list-view");
 			this.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
 				@Override
 				public ListCell<String> call(ListView<String> listView) {
@@ -130,7 +133,7 @@ public class JFXDateTimePickerContent extends VBox {
 						boolean mousePressed = false;
 
 						{
-							this.getStyleClass().setAll("data-time-picker-list-cell");
+							this.getStyleClass().setAll("data-picker-list-cell");
 							setOnMousePressed((click) -> {
 								mousePressed = true;
 							});
@@ -200,9 +203,9 @@ public class JFXDateTimePickerContent extends VBox {
 	final DateTimeFormatter weekDayNameFormatter = DateTimeFormatter.ofPattern("ccc");
 	final DateTimeFormatter dayCellFormatter = DateTimeFormatter.ofPattern("d");
 
-	final DateTimeFormatter hourCellFormatter = DateTimeFormatter.ofPattern("HH");
-	final DateTimeFormatter minCellFormatter = DateTimeFormatter.ofPattern("mm");
-	final DateTimeFormatter secCellFormatter = DateTimeFormatter.ofPattern("ss");
+	//	final DateTimeFormatter hourCellFormatter = DateTimeFormatter.ofPattern("HH");
+	//	final DateTimeFormatter minCellFormatter = DateTimeFormatter.ofPattern("mm");
+	//	final DateTimeFormatter secCellFormatter = DateTimeFormatter.ofPattern("ss");
 
 	private ObjectProperty<YearMonth> selectedYearMonth = new SimpleObjectProperty<YearMonth>(this, "selectedYearMonth");
 
@@ -219,10 +222,12 @@ public class JFXDateTimePickerContent extends VBox {
 		getStyleClass().add("date-picker-popup");
 
 		LocalDateTime currentDateTime = LocalDateTime.now();
-		LocalDateTime date = datePicker.getValue();
+		LocalDateTime date = this.datePicker.getValue();
 
 		selectedYearMonth.set((date != null) ? YearMonth.from(date) : YearMonth.now());
-		selectedYearMonth.addListener((observable, oldValue, newValue) -> updateValues());
+		selectedYearMonth.addListener((observable, oldValue, newValue) -> {
+			updateValues();
+		});
 
 		// currentDateTime Set.
 		if (date != null && date.isSupported(ChronoField.HOUR_OF_DAY)) {
@@ -246,9 +251,6 @@ public class JFXDateTimePickerContent extends VBox {
 			jfSec = createNumberSpinnerForSecond(defSec);
 		}
 
-		//		jfHour.valueProperty().addListener((ob, o, n) -> lblHour.setText(String.format(EVRY_HOUR_FORMAT, n.intValue())));
-		//		jfMin.valueProperty().addListener((ob, o, n) -> lblMin.setText(String.format(EVRY_MIN_FORMAT, n.intValue())));
-		//		jfSec.valueProperty().addListener((ob, o, n) -> lblSec.setText(String.format(EVRY_SEC_FORMAT, n.intValue())));
 		jfHour.valueProperty().addListener((ob, o, n) -> updateHour(n.intValue()));
 		jfMin.valueProperty().addListener((ob, o, n) -> updateMinute(n.intValue()));
 		jfSec.valueProperty().addListener((ob, o, n) -> updateSecond(n.intValue()));
@@ -290,9 +292,10 @@ public class JFXDateTimePickerContent extends VBox {
 			}
 		};
 		contentGrid.setFocusTraversable(true);
+		contentGrid.setStyle("-fx-background-color : transparent; -fx-padding : 0, 12, 12, 12");
 		contentGrid.getStyleClass().add("calendar-grid");
-		contentGrid.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
-		contentGrid.setPadding(new Insets(0, 12, 12, 12));
+		//		contentGrid.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
+		//		contentGrid.setPadding(new Insets(0, 12, 12, 12));
 		contentGrid.setVgap(0);
 		contentGrid.setHgap(0);
 
@@ -370,12 +373,11 @@ public class JFXDateTimePickerContent extends VBox {
 		});
 
 		// create animation
-		showTransition = new CachedTransition(yearsListView,
-				new Timeline(
-						new KeyFrame(Duration.millis(0), new KeyValue(yearsListView.opacityProperty(), 0, Interpolator.EASE_BOTH),
-								new KeyValue(calendarPlaceHolder.opacityProperty(), 1, Interpolator.EASE_BOTH)),
-						new KeyFrame(Duration.millis(500), new KeyValue(yearsListView.opacityProperty(), 0, Interpolator.EASE_BOTH),
-								new KeyValue(calendarPlaceHolder.opacityProperty(), 0, Interpolator.EASE_BOTH)),
+		showTransition = new CachedTransition(yearsListView, new Timeline(
+				new KeyFrame(Duration.millis(0), new KeyValue(yearsListView.opacityProperty(), 0, Interpolator.EASE_BOTH),
+						new KeyValue(calendarPlaceHolder.opacityProperty(), 1, Interpolator.EASE_BOTH)),
+				new KeyFrame(Duration.millis(500), new KeyValue(yearsListView.opacityProperty(), 0, Interpolator.EASE_BOTH),
+						new KeyValue(calendarPlaceHolder.opacityProperty(), 0, Interpolator.EASE_BOTH)),
 				new KeyFrame(Duration.millis(1000), new KeyValue(yearsListView.opacityProperty(), 1, Interpolator.EASE_BOTH),
 						new KeyValue(calendarPlaceHolder.opacityProperty(), 0, Interpolator.EASE_BOTH),
 						new KeyValue(selectedYearLabel.textFillProperty(), Color.WHITE, Interpolator.EASE_BOTH),
@@ -391,12 +393,11 @@ public class JFXDateTimePickerContent extends VBox {
 			}
 		};
 
-		hideTransition = new CachedTransition(yearsListView,
-				new Timeline(
-						new KeyFrame(Duration.millis(0), new KeyValue(yearsListView.opacityProperty(), 1, Interpolator.EASE_BOTH),
-								new KeyValue(calendarPlaceHolder.opacityProperty(), 0, Interpolator.EASE_BOTH)),
-						new KeyFrame(Duration.millis(500), new KeyValue(yearsListView.opacityProperty(), 0, Interpolator.EASE_BOTH),
-								new KeyValue(calendarPlaceHolder.opacityProperty(), 0, Interpolator.EASE_BOTH)),
+		hideTransition = new CachedTransition(yearsListView, new Timeline(
+				new KeyFrame(Duration.millis(0), new KeyValue(yearsListView.opacityProperty(), 1, Interpolator.EASE_BOTH),
+						new KeyValue(calendarPlaceHolder.opacityProperty(), 0, Interpolator.EASE_BOTH)),
+				new KeyFrame(Duration.millis(500), new KeyValue(yearsListView.opacityProperty(), 0, Interpolator.EASE_BOTH),
+						new KeyValue(calendarPlaceHolder.opacityProperty(), 0, Interpolator.EASE_BOTH)),
 				new KeyFrame(Duration.millis(1000), new KeyValue(yearsListView.opacityProperty(), 0, Interpolator.EASE_BOTH),
 						new KeyValue(calendarPlaceHolder.opacityProperty(), 1, Interpolator.EASE_BOTH),
 						new KeyValue(selectedDateLabel.textFillProperty(), Color.WHITE, Interpolator.EASE_BOTH),
@@ -445,9 +446,10 @@ public class JFXDateTimePickerContent extends VBox {
 
 		// Year label
 		selectedYearLabel = new Label();
+		selectedYearLabel.setStyle("-fx-text-fill:white; -fx-font-weight: bold; -fx-font-size : 14; -fx-opiticy : 0.67 ; ");
 		selectedYearLabel.getStyleClass().add("spinner-label");
-		selectedYearLabel.setTextFill(Color.rgb(255, 255, 255, 0.67));
-		selectedYearLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 14));
+		//		selectedYearLabel.setTextFill(Color.rgb(255, 255, 255, 0.67));
+		//		selectedYearLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 14));
 		// Year label container
 		HBox yearLabelContainer = new HBox();
 		yearLabelContainer.getStyleClass().add("spinner");
@@ -465,13 +467,22 @@ public class JFXDateTimePickerContent extends VBox {
 
 		// selected date label
 		selectedDateLabel = new Label();
+		selectedDateLabel.setStyle("-fx-text-fill: white; -fx-font-weight : bold ; -fx-font-size : 28");
 		selectedDateLabel.getStyleClass().add("spinner-label");
-		selectedDateLabel.setTextFill(Color.WHITE);
-		selectedDateLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 28));
+		//		selectedDateLabel.setTextFill(Color.WHITE);
+		//		selectedDateLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 28));
+
+		// selected Time Label
+		selectedTimeLabel = new Label();
+		selectedTimeLabel.setStyle("-fx-text-fill: white; -fx-font-weight : bold ; -fx-font-size : 28");
+		selectedTimeLabel.getStyleClass().add("spinner-label");
+		//		selectedTimeLabel.setTextFill(Color.WHITE);
+		//		selectedTimeLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 28));
+
 		// selected date label container
 		HBox selectedDateContainer = new HBox();
 		selectedDateContainer.getStyleClass().add("spinner");
-		selectedDateContainer.getChildren().addAll(selectedDateLabel);
+		selectedDateContainer.getChildren().addAll(selectedDateLabel, selectedTimeLabel);
 		selectedDateContainer.setAlignment(Pos.CENTER_LEFT);
 		selectedDateContainer.setOnMouseClicked((click) -> {
 			if (yearsListView.isVisible()) {
@@ -481,11 +492,17 @@ public class JFXDateTimePickerContent extends VBox {
 		});
 
 		VBox headerPanel = new VBox();
+
+		Color defaultColor = (Color) this.datePicker.getDefaultColor();
+		String rgbCode = FxUtil.toRGBCode(defaultColor);
+		headerPanel.setStyle("-fx-background-color : " + rgbCode + "; -fx-padding : 12, 24, 12 ,24");
 		headerPanel.getStyleClass().add("month-year-pane");
-		headerPanel.setBackground(new Background(new BackgroundFill(this.datePicker.getDefaultColor(), CornerRadii.EMPTY, Insets.EMPTY)));
-		headerPanel.setPadding(new Insets(12, 24, 12, 24));
+		//		headerPanel.setBackground(new Background(new BackgroundFill(defaultColor, CornerRadii.EMPTY, Insets.EMPTY)));
+		//		headerPanel.setPadding(new Insets(12, 24, 12, 24));
+
 		headerPanel.getChildren().add(yearLabelContainer);
 		headerPanel.getChildren().add(selectedDateContainer);
+
 		return headerPanel;
 	}
 
@@ -570,17 +587,20 @@ public class JFXDateTimePickerContent extends VBox {
 		hbMin.setAlignment(Pos.CENTER);
 		hbSec.setAlignment(Pos.CENTER);
 
-		lblHour.setTextFill(Color.WHITE);
-		lblHour.setFont(Font.font("Roboto", FontWeight.BOLD, 12));
+		lblHour.setStyle("-fx-text-fill:white; -fx-font-weight: bold ; -fx-font-size : 12px");
+		//		lblHour.setFont(Font.font("Roboto", FontWeight.BOLD, 12));
 		lblHour.setPrefWidth(80d);
+		lblSec.getStyleClass().add("date-picker-time-hour");
 
-		lblMin.setTextFill(Color.WHITE);
-		lblMin.setFont(Font.font("Roboto", FontWeight.BOLD, 12));
+		lblMin.setStyle("-fx-text-fill:white; -fx-font-weight: bold ; -fx-font-size : 12px");
+		//		lblMin.setFont(Font.font("Roboto", FontWeight.BOLD, 12));
 		lblMin.setPrefWidth(80d);
+		lblSec.getStyleClass().add("date-picker-time-min");
 
-		lblSec.setTextFill(Color.WHITE);
+		lblSec.setStyle("-fx-text-fill:white; -fx-font-weight: bold ; -fx-font-size : 12px");
 		lblSec.setFont(Font.font("Roboto", FontWeight.BOLD, 12));
 		lblSec.setPrefWidth(80d);
+		lblSec.getStyleClass().add("date-picker-time-sec");
 
 		VBox vBox = new VBox(5, hbHour, hbMin, hbSec);
 		vBox.getStyleClass().add("data-time-picker-time-container");
@@ -588,6 +608,8 @@ public class JFXDateTimePickerContent extends VBox {
 		vBox.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		vBox.setBackground(new Background(new BackgroundFill(this.datePicker.getDefaultColor(), CornerRadii.EMPTY, Insets.EMPTY)));
 		vBox.setAlignment(Pos.CENTER);
+
+		vBox.setPadding(new Insets(5));
 		return vBox;
 	}
 
@@ -714,10 +736,13 @@ public class JFXDateTimePickerContent extends VBox {
 		updateTime(-1, -1, sec);
 	}
 
+	private LocalDateTime tmpNow = LocalDateTime.now();
+
 	void updateTime(int hour, int min, int sec) {
 		LocalDateTime value = datePicker.getValue();
-		if (value == null)
-			value = LocalDateTime.now();
+		if (value == null) {
+			value = tmpNow;
+		}
 
 		if (hour != -1) {
 			value = value.withHour(hour);
@@ -730,7 +755,10 @@ public class JFXDateTimePickerContent extends VBox {
 		if (sec != -1) {
 			value = value.withSecond(sec);
 		}
-		datePicker.setValue(value);
+
+		
+		selectedTimeLabel.setText(DateTimeFormatter.ofPattern("HH:mm:ss").format(value));
+		this.datePicker.setValue(value);
 	}
 
 	void updateWeekNumberDateCells() {
@@ -821,10 +849,12 @@ public class JFXDateTimePickerContent extends VBox {
 		LocalDateTime value = datePicker.getValue();
 
 		if (value != null) {
-			String format = DateTimeFormatter.ofPattern("EEE, MMM yy HH:mm:ss").format(value);
-			selectedDateLabel.setText(format);
+			selectedDateLabel.setText(DateTimeFormatter.ofPattern("EEE, MMM yy ").format(value));
+			selectedTimeLabel.setText(DateTimeFormatter.ofPattern("HH:mm:ss").format(value));
 		} else {
-			selectedDateLabel.setText(DateTimeFormatter.ofPattern("EEE, MMM yy HH:mm:ss").format(LocalDateTime.now()));
+			LocalDateTime now = LocalDateTime.now();
+			selectedDateLabel.setText(DateTimeFormatter.ofPattern("EEE, MMM yy ").format(now));
+			selectedTimeLabel.setText(DateTimeFormatter.ofPattern("HH:mm:ss").format(now));
 		}
 
 		selectedYearLabel.setText(formatYear(yearMonth));
@@ -869,8 +899,9 @@ public class JFXDateTimePickerContent extends VBox {
 	protected LocalDateTime dayCellDate(JFXDateTimeCell dateCell) {
 		assert (dayCellDates != null);
 		LocalDateTime localDate = dayCellDates[dayCells.indexOf(dateCell)];
-		return localDate;
-		//		return localDate.atTime((int) jfHour.getValue(), (int) jfMin.getValue(), (int) jfSec.getValue());
+		return localDate.withHour((int)jfHour.getValue()).withMinute((int) jfMin.getValue()).withSecond((int) jfSec.getValue());
+//		return localDate;
+//				return localDate.atTime((int) jfHour.getValue(), (int) jfMin.getValue(), (int) jfSec.getValue());
 	}
 
 	protected void forward(int offset, ChronoUnit unit, boolean focusDayCell, boolean withAnimation) {
@@ -959,6 +990,7 @@ public class JFXDateTimePickerContent extends VBox {
 					if (click.getButton() != MouseButton.PRIMARY)
 						return;
 					JFXDateTimeCell selectedDayCell = (JFXDateTimeCell) click.getSource();
+
 					selectDayCell(selectedDayCell);
 					currentFocusedDayCell = selectedDayCell;
 				});

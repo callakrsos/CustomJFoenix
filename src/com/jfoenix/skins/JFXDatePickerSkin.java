@@ -88,10 +88,15 @@ public class JFXDatePickerSkin extends ComboBoxPopupControl<LocalDate> {
 					Color.BLACK);
 
 		((SVGGlyph) arrow).fillProperty().bind(jfxDatePicker.defaultColorProperty());
-		((SVGGlyph) arrow).setSize(20, 20);
+//		((SVGGlyph) arrow).setSize(20, 20);
+		//2016-11-25 by kyj Fix SVGGlyph  following  Editor - Height.
+		((SVGGlyph) arrow).setPrefWidth(20d);
+		((SVGGlyph) arrow).prefHeightProperty().bind(editorNode.prefHeightProperty());
+		
 		arrowButton.getChildren().setAll(arrow);
-		arrowButton.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
-
+		//fix setStyle.
+//		arrowButton.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
+		arrowButton.setStyle("-fx-background-color : transparent");
 		//dialog = new JFXDialog(null, content, transitionType, overlayClose)
 
 		registerChangeListener(datePicker.converterProperty(), "CONVERTER");

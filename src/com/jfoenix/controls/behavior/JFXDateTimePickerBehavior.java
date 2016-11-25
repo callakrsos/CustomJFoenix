@@ -39,38 +39,41 @@ import com.sun.javafx.scene.control.behavior.KeyBinding;
  */
 public class JFXDateTimePickerBehavior extends ComboBoxBaseBehavior<LocalDateTime> {
 
-    /***************************************************************************
-     *                                                                         *
-     * Constructors                                                            *
-     *                                                                         *
-     **************************************************************************/
+	/***************************************************************************
+	 *                                                                         *
+	 * Constructors                                                            *
+	 *                                                                         *
+	 **************************************************************************/
 
-    public JFXDateTimePickerBehavior(final JFXDateTimePicker datePicker) {
-        super(datePicker, JFX_DATE_PICKER_BINDINGS);
-    }
+	public JFXDateTimePickerBehavior(final JFXDateTimePicker datePicker) {
+		super(datePicker, JFX_DATE_PICKER_BINDINGS);
+	}
 
-    /***************************************************************************
-     *                                                                         *
-     * Key event handling                                                      *
-     *                                                                         *
-     **************************************************************************/
+	/***************************************************************************
+	 *                                                                         *
+	 * Key event handling                                                      *
+	 *                                                                         *
+	 **************************************************************************/
 
-    protected static final List<KeyBinding> JFX_DATE_PICKER_BINDINGS = new ArrayList<KeyBinding>();
-    static {
-        JFX_DATE_PICKER_BINDINGS.addAll(COMBO_BOX_BASE_BINDINGS);
-    }
+	protected static final List<KeyBinding> JFX_DATE_PICKER_BINDINGS = new ArrayList<KeyBinding>();
+	static {
+		JFX_DATE_PICKER_BINDINGS.addAll(COMBO_BOX_BASE_BINDINGS);
+	}
 
 	/**************************************************************************
-     *                                                                        *
-     * Mouse Events handling (when losing focus)                              *
-     *                                                                        *
-     *************************************************************************/
+	 *                                                                        *
+	 * Mouse Events handling (when losing focus)                              *
+	 *                                                                        *
+	 *************************************************************************/
 
-	@Override public void onAutoHide() {
-		JFXDateTimePicker datePicker = (JFXDateTimePicker)getControl();
-        JFXDateTimePickerSkin cpSkin = (JFXDateTimePickerSkin)datePicker.getSkin();
-        cpSkin.syncWithAutoUpdate();
-        if (!datePicker.isShowing()) super.onAutoHide();
-    }
+	@Override
+	public void onAutoHide() {
+		JFXDateTimePicker datePicker = (JFXDateTimePicker) getControl();
+		JFXDateTimePickerSkin cpSkin = (JFXDateTimePickerSkin) datePicker.getSkin();
+		cpSkin.syncWithAutoUpdate();
+		if (!datePicker.isShowing()) {
+			super.onAutoHide();
+		}
+	}
 
 }

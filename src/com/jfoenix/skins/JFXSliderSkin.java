@@ -53,8 +53,8 @@ import javafx.util.Duration;
  */
 public class JFXSliderSkin extends SliderSkin {
 
-
-	private Paint thumbColor = Color.valueOf("#0F9D58"), trackColor = Color.valueOf("#CCCCCC");
+	//original tumbColor : #0F9D58
+	private Paint thumbColor = Color.valueOf("#FFCE44"), trackColor = Color.valueOf("#CCCCCC");
 
 	private Text sliderValue;
 	private StackPane coloredTrack;

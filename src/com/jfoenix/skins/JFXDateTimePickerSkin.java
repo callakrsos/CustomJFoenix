@@ -33,6 +33,7 @@ import com.sun.javafx.scene.control.skin.ComboBoxPopupControl;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
@@ -66,6 +67,10 @@ public class JFXDateTimePickerSkin extends ComboBoxPopupControl<LocalDateTime> {
 		super(datePicker, new JFXDateTimePickerBehavior(datePicker));
 		this.JFXDateTimePicker = datePicker;
 		editorNode = new JFXTextField();
+		editorNode.setAlignment(Pos.CENTER);
+		editorNode.alignmentProperty().bind(datePicker.posProperty());
+		editorNode.setPrefSize(JFXTextField.USE_COMPUTED_SIZE, JFXTextField.USE_COMPUTED_SIZE);
+		editorNode.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 		editorNode.focusColorProperty().bind(datePicker.defaultColorProperty());
 
 		// create calender or clock button
@@ -79,7 +84,10 @@ public class JFXDateTimePickerSkin extends ComboBoxPopupControl<LocalDateTime> {
 		//					Color.BLACK);
 
 		((SVGGlyph) arrow).fillProperty().bind(JFXDateTimePicker.defaultColorProperty());
-		((SVGGlyph) arrow).setSize(20, 20);
+		((SVGGlyph) arrow).setPrefWidth(20d);
+		((SVGGlyph) arrow).prefHeightProperty().bind(editorNode.prefHeightProperty());
+		
+//		((SVGGlyph) arrow).setSize(datePicker.getPrefWidth()/*15*/, datePicker.getPrefHeight()/*15*/);
 		arrowButton.getChildren().setAll(arrow);
 		arrowButton.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, CornerRadii.EMPTY, Insets.EMPTY)));
 
@@ -150,7 +158,8 @@ public class JFXDateTimePickerSkin extends ComboBoxPopupControl<LocalDateTime> {
 					JFXDateTimePickerContent.updateValues();
 				}
 				show();
-			} else {
+			} 
+			else {
 				hide();
 			}
 		} else if ("SHOW_WEEK_NUMBERS".equals(p)) {
@@ -184,7 +193,7 @@ public class JFXDateTimePickerSkin extends ComboBoxPopupControl<LocalDateTime> {
 
 	// these methods are called from the super constructor
 	@Override
-	protected TextField getEditor() {
+	public TextField getEditor() {
 		StackTraceElement caller = Thread.currentThread().getStackTrace()[2];
 		/*
 		 *  added to fix android issue as the stack trace on android is

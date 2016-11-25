@@ -33,6 +33,7 @@ import javafx.css.StyleableBooleanProperty;
 import javafx.css.StyleableObjectProperty;
 import javafx.css.StyleableProperty;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.AccessibleRole;
 import javafx.scene.control.Cell;
 import javafx.scene.control.ComboBoxBase;
@@ -72,6 +73,26 @@ public class JFXDateTimePicker extends ComboBoxBase<LocalDateTime> {
 		setAccessibleRole(AccessibleRole.DATE_PICKER);
 		setEditable(true);
 		initialize();
+	}
+	
+	private ObjectProperty<Pos> pos = new SimpleObjectProperty<>(Pos.CENTER_LEFT);
+	public final ObjectProperty<Pos> posProperty() {
+		return this.pos;
+	}
+	public final Pos getPos() {
+		return this.posProperty().get();
+	}
+	public final void setPos(final Pos pos) {
+		this.posProperty().set(pos);
+	}
+	
+	/**
+	 * @작성자 : KYJ
+	 * @작성일 : 2016. 11. 25. 
+	 * @param pos
+	 */
+	public void setTextAlignment(Pos pos){
+		setPos(pos);
 	}
 
 	private void initialize() {
@@ -412,5 +433,8 @@ public class JFXDateTimePicker extends ComboBoxBase<LocalDateTime> {
 		}
 		return dayCellFactory;
 	}
+
+	
+	
 
 }
