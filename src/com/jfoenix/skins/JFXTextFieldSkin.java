@@ -133,12 +133,15 @@ public class JFXTextFieldSkin extends TextFieldSkin{
 
 	public JFXTextFieldSkin(JFXTextField field) {
 		super(field);
-
+		
+		
 		// initial styles
 		//		field.setStyle("-fx-background-color: transparent ;-fx-font-weight: BOLD;-fx-prompt-text-fill: #808080;-fx-alignment: top-left ;");
 		field.setBackground(new Background(new BackgroundFill(Color.TRANSPARENT, null, null)));
-		field.setAlignment(Pos.TOP_LEFT);
-
+		//2016-11-25  by kyj. BugFix - always top_left 
+//		field.setAlignment(Pos.TOP_LEFT);
+		
+		
 		errorLabel.getStyleClass().add("errorLabel");
 		errorLabel.setWrapText(true);		
 		errorIcon.setTranslateY(3);
