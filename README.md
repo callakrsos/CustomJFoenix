@@ -92,7 +92,8 @@ Reference the repository from this location using:
 ![Alt text](https://cloud.githubusercontent.com/assets/5085283/20595731/7091cd6c-b27e-11e6-94d7-985fd3a5e8d5.png "Date time Picker Demo")
 
 2. Bug Fix. 
-  - Time Picker          Error Fix.
-  - DatePicker Alignment Fix.
+  - Time Picker           - Error fix.
+  - DatePicker Text Alignment Bug fix.
+  - slider default color chg.
 
 
