@@ -494,7 +494,7 @@ public class JFXDateTimePickerContent extends VBox {
 		VBox headerPanel = new VBox();
 
 		Color defaultColor = (Color) this.datePicker.getDefaultColor();
-		String rgbCode = FxUtil.toRGBCode(defaultColor);
+		String rgbCode = FxUtil.toWeb(defaultColor);
 		headerPanel.setStyle("-fx-background-color : " + rgbCode + "; -fx-padding : 12, 24, 12 ,24");
 		headerPanel.getStyleClass().add("month-year-pane");
 		//		headerPanel.setBackground(new Background(new BackgroundFill(defaultColor, CornerRadii.EMPTY, Insets.EMPTY)));
