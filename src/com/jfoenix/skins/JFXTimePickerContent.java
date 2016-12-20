@@ -46,6 +46,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -233,9 +234,24 @@ public class JFXTimePickerContent extends VBox {
 			updateValue();
 		};
 
+		/*
+		 * 시각을 더블클릭하면 닫히는 이벤트를 추가한다.
+		 * 
+		 * */
+		EventHandler<? super MouseEvent> mouseClickHandler = ev -> {
+            
+			if (MouseButton.PRIMARY == ev.getButton() && ev.getClickCount() == 2) {
+				
+				JFXDatePickerSkin jfxDatePickerSkin = (JFXDatePickerSkin) datePicker.getSkin();
+				jfxDatePickerSkin.getSkinnable().hide();
+			}
+
+		};
+		
 		circle.setOnMousePressed(mouseActionHandler);
 		circle.setOnMouseDragged(mouseActionHandler);
-
+		
+		circle.setOnMouseClicked(mouseClickHandler);
 		hoursContent = createHoursContent(time);
 		hoursContent.setMouseTransparent(true);
 		minutesContent = createMinutesContent(time);
