@@ -52,7 +52,6 @@ public class DatePickerDemo  extends Application {
 
 		JFXDatePicker blueDatePicker = new JFXDatePicker();
 		blueDatePicker.setDefaultColor(Color.valueOf("#3f51b5"));
-		blueDatePicker.setOverLay(true);
 		blueDatePicker.setShowTime(true);
 		main.getChildren().add(blueDatePicker);
 
